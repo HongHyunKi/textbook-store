@@ -37,6 +37,7 @@
 | Pretendard | Noto Sans KR (`next/font/google`) | 폰트 파일을 저장소에 두지 않음. 정확한 Figma 폰트명은 확인 불가 |
 | 배너 HTML 재구성 | export 이미지 + `sr-only` 문구 | 배너 이미지에 문구가 포함되어 있어 중복 표시를 피함 |
 | `placeholder.webp` | `placeholder.svg` | 별도 이미지 파일 없이 SVG 한 개로 대체 |
+| `components/`에 레이아웃만, `Pagination`은 products 안 | `components/layout`, `components/ui/Pagination` | 레이아웃과 범용 UI의 역할을 구분. 다른 목록에서도 페이지네이션을 재사용 |
 
 ## 검증 기록
 
@@ -52,4 +53,4 @@
 - **Drivers**: 마감 안정성, CSR 요구 충족, 면접에서 설명하기 쉬운 구조.
 - **Alternatives considered**: `useEffect` 직접 fetch(상태·경합·재시도를 손으로 작성해야 함), Server Component fetch(CSR 요구 위반), Supabase 서버 검색과 `range` 페이지네이션(36건에는 과함), SQL Editor 직접 실행(이력이 남지 않음).
 - **Consequences**: 전체 데이터를 한 번에 받으므로 수천 건 이상에는 부적합하다. 이미지는 `public/`에 있어 교체하려면 재배포가 필요하다.
-- **Follow-ups**: 데이터가 늘면 서버 검색(`ilike`)과 `range` 페이지네이션으로 전환하고 검색 조건을 query key에 넣는다. 이미지 관리가 필요하면 Supabase Storage와 `remotePatterns`를 도입한다.
+- **Follow-ups**: 상품을 공유하는 기능(상세, 장바구니)이 생기면 `entities/product`와 `features/product-filter`로 나누고 `shared` 계층을 두어 FSD로 확장한다. 데이터가 늘면 서버 검색(`ilike`)과 `range` 페이지네이션으로 전환하고 검색 조건을 query key에 넣는다. 이미지 관리가 필요하면 Supabase Storage와 `remotePatterns`를 도입한다.

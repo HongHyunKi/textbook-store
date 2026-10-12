@@ -197,8 +197,10 @@ Figma 카드에 쓰이지 않는 `description`은 넣지 않았다. Figma의 76,
 ```text
 src/
   app/                 # layout, page, providers(QueryClient), globals.css
-  components/          # Header, Banner, Footer (공통 레이아웃)
-  features/products/   # types, api, utils(+test), ProductList, ProductToolbar, ProductCard, Pagination
+  components/
+    layout/            # Header, Banner, Footer (공통 레이아웃)
+    ui/                # Pagination (범용 UI)
+  features/products/   # types, api, utils(+test), ProductList, ProductToolbar, ProductCard
   lib/supabase.ts      # Supabase 클라이언트
 supabase/
   migrations/          # 스키마·RLS 마이그레이션

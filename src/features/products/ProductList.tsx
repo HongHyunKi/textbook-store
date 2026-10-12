@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchProducts } from "./api";
 import { ProductCard } from "./ProductCard";
 import { ProductToolbar } from "./ProductToolbar";
-import { Pagination } from "./Pagination";
+import { Pagination } from "@/components/ui/Pagination";
 import type { CategoryFilter } from "./types";
 import { PAGE_SIZE, selectProducts } from "./utils";
 
