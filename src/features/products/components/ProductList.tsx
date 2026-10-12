@@ -41,6 +41,64 @@ export function ProductList(): JSX.Element {
     setPage(1);
   }
 
+  let content: JSX.Element;
+  if (isPending) {
+    content = (
+      <div role="status">
+        <span className="sr-only">교재를 불러오는 중입니다.</span>
+        <ProductGridSkeleton />
+      </div>
+    );
+  } else if (isLoadingError) {
+    content = (
+      <div className="py-24 text-center">
+        <p role="alert" className="text-body text-text-dark">
+          교재를 불러오지 못했습니다.
+        </p>
+        <button
+          type="button"
+          onClick={() => refetch()}
+          disabled={isFetching}
+          className="mt-4 rounded-base border border-border-secondary px-4 py-2 text-body-sm enabled:hover:bg-surface-muted disabled:opacity-50"
+        >
+          다시 시도
+        </button>
+      </div>
+    );
+  } else if (data.length === 0) {
+    content = (
+      <p role="status" className="py-24 text-center text-body text-text-secondary">
+        등록된 교재가 없습니다
+      </p>
+    );
+  } else if (filteredProducts.length === 0) {
+    content = (
+      <div className="py-24 text-center">
+        <p role="status" className="text-body text-text-secondary">
+          검색 결과가 없습니다
+        </p>
+        <button
+          type="button"
+          onClick={() => {
+            changeQuery("");
+            changeCategory("all");
+          }}
+          className="mt-4 rounded-base border border-border-secondary px-4 py-2 text-body-sm hover:bg-surface-muted"
+        >
+          검색 초기화
+        </button>
+      </div>
+    );
+  } else {
+    content = (
+      <div className={GRID_CLASS}>
+        {visibleProducts.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <>
       <ProductToolbar
@@ -49,67 +107,45 @@ export function ProductList(): JSX.Element {
         onQueryChange={changeQuery}
         onCategoryChange={changeCategory}
       />
-      {isPending ? (
-        <div role="status">
-          <span className="sr-only">교재를 불러오는 중입니다.</span>
-          <div
-            aria-hidden="true"
-            className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 md:gap-x-6 xl:grid-cols-4"
-          >
-            {Array.from({ length: PAGE_SIZE }, (_, index) => (
-              <div key={index} className="animate-pulse motion-reduce:animate-none">
-                <div className="aspect-[250/320] rounded-base bg-surface-muted" />
-                <div className="mt-4 h-3 w-8 rounded-base bg-surface-muted" />
-                <div className="mt-2 h-5 w-4/5 rounded-base bg-surface-muted" />
-                <div className="mt-3 h-5 w-1/2 rounded-base bg-surface-muted" />
-              </div>
-            ))}
-          </div>
-        </div>
-      ) : isLoadingError ? (
-        <div className="py-24 text-center">
-          <p role="alert" className="text-body text-text-dark">
-            교재를 불러오지 못했습니다.
-          </p>
-          <button
-            type="button"
-            onClick={() => refetch()}
-            disabled={isFetching}
-            className="mt-4 rounded-base border border-border-secondary px-4 py-2 text-body-sm enabled:hover:bg-surface-muted disabled:opacity-50"
-          >
-            다시 시도
-          </button>
-        </div>
-      ) : data.length === 0 ? (
-        <p role="status" className="py-24 text-center text-body text-text-secondary">
-          등록된 교재가 없습니다
-        </p>
-      ) : filteredProducts.length === 0 ? (
-        <div className="py-24 text-center">
-          <p role="status" className="text-body text-text-secondary">
-            검색 결과가 없습니다
-          </p>
-          <button
-            type="button"
-            onClick={() => {
-              changeQuery("");
-              changeCategory("all");
-            }}
-            className="mt-4 rounded-base border border-border-secondary px-4 py-2 text-body-sm hover:bg-surface-muted"
-          >
-            검색 초기화
-          </button>
-        </div>
-      ) : (
-        <>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 md:gap-x-6 xl:grid-cols-4">
-            {visibleProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+      {/* 결과가 줄어도 검색창 아래가 최소 한 화면을 채워, 푸터가 화면 안으로 당겨 올라오는 레이아웃 이동(CLS)을 막는다 */}
+      <div className="min-h-svh">{content}</div>
+      <div className="mt-[46px] min-h-10">
+        {!isPending && filteredProducts.length > 0 && (
           <Pagination page={currentPage} pageCount={pageCount} onPageChange={setPage} />
-        </>
-      )}
+        )}
+      </div>
     </>
+  );
+}
+
+// xl: 피그마 기준 250px 카드 4개를 1280px 안에 space-between으로 배치, 행 간격 36px
+const GRID_CLASS =
+  "grid grid-cols-2 gap-x-4 gap-y-9 md:grid-cols-3 md:gap-x-6 xl:grid-cols-[repeat(4,250px)] xl:justify-between";
+
+// ProductCard와 같은 이미지 비율·타이포그래피(줄 높이)로 그려 실제 카드와 높이를 맞춘다.
+function ProductGridSkeleton() {
+  const bar = "inline-block rounded-base bg-surface-muted";
+  return (
+    <div aria-hidden="true" className={`${GRID_CLASS} animate-pulse motion-reduce:animate-none`}>
+      {Array.from({ length: PAGE_SIZE }, (_, index) => (
+        <div key={index}>
+          <div className="aspect-[250/320] rounded-base bg-surface-muted" />
+          <p className="mt-1 text-body">
+            <span className={`${bar} w-8`}>&nbsp;</span>
+          </p>
+          <p className="min-h-[2lh] text-body xl:min-h-0">
+            <span className={`${bar} w-4/5`}>&nbsp;</span>
+          </p>
+          <div className="mt-2 text-body">
+            <p className="text-body-sm">
+              <span className={`${bar} w-1/3`}>&nbsp;</span>
+            </p>
+            <p>
+              <span className={`${bar} w-1/2`}>&nbsp;</span>
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 }

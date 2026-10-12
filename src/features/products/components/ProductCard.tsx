@@ -13,21 +13,27 @@ export function ProductCard({ product }: { product: Product }) {
           src={/^\/(?!\/)/.test(product.image_url) ? product.image_url : "/placeholder.svg"}
           alt={product.title}
           fill
-          sizes="(min-width:1280px) 25vw, (min-width:768px) 33vw, 50vw"
+          sizes="(min-width:1280px) 250px, (min-width:768px) 33vw, 50vw"
           className="object-contain"
         />
       </div>
-      <p className="mt-4 text-body-sm text-text-secondary">{CATEGORY_LABEL[product.category]}</p>
-      <h3 className="mt-1 break-words text-body-sm-strong text-text-primary sm:text-body">
+      <p className="mt-1 text-body text-text-secondary">{CATEGORY_LABEL[product.category]}</p>
+      {/* 카드 높이를 상품마다 같게 맞춰 페이지 이동 시 그리드 높이가 바뀌지 않게 한다.
+          xl은 피그마처럼 한 줄(말줄임), 그보다 좁으면 두 줄 높이를 고정한다. */}
+      <h3
+        title={product.title}
+        className="line-clamp-2 min-h-[2lh] break-words text-body text-text-primary xl:line-clamp-1 xl:min-h-0"
+      >
         {product.title}
       </h3>
-      <div className="mt-2 text-body-sm-strong sm:text-body">
-        {hasDiscount && product.original_price !== null && (
-          <p className="mb-1 text-body-sm text-text-muted">
+      <div className="mt-2 text-body">
+        {/* 할인이 없어도 원가 줄 높이를 비워 둔다 */}
+        <p className="min-h-[1lh] text-body-sm text-text-muted">
+          {hasDiscount && product.original_price !== null && (
             <del>{priceFormat.format(product.original_price)}원</del>
-          </p>
-        )}
-        <p className="flex flex-wrap items-baseline gap-x-2">
+          )}
+        </p>
+        <p className="flex flex-wrap items-baseline gap-x-1.5">
           {hasDiscount && <span className="text-discount">{product.discount_rate}%</span>}
           <span>{priceFormat.format(product.price)}원</span>
         </p>
