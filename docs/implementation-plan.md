@@ -6,16 +6,16 @@
 
 ## 진행 상황
 
-| 단계 | 내용 | 상태 |
-| --- | --- | --- |
-| 0. Figma 확인 | 과제 원문, 화면 구성, 에셋 export | 완료 |
-| 1. 골격 | Next.js 16 + Tailwind v4 + React Query + Vitest, pnpm | 완료 |
-| 2. 목록 UI와 CSR 조회 | 헤더, 배너, 카드, 로딩·오류·빈 상태 | 완료 |
-| 3. 반응형·접근성 | 2/3/4열, 라벨·포커스·대체 텍스트 | 완료 |
-| 4. 검색·카테고리·페이지네이션 | `selectProducts` + 테스트 5개 | 완료 |
-| 5. Supabase | 마이그레이션·seed를 CLI로 원격 적용 | 완료 |
-| 6. 운영 보완 | CI, keepalive 워크플로, README | 완료 |
-| 7. 배포·제출 | GitHub 공개, Vercel 연결, URL 제출 | 진행 중 |
+| 단계                          | 내용                                                  | 상태    |
+| ----------------------------- | ----------------------------------------------------- | ------- |
+| 0. Figma 확인                 | 과제 원문, 화면 구성, 에셋 export                     | 완료    |
+| 1. 골격                       | Next.js 16 + Tailwind v4 + React Query + Vitest, pnpm | 완료    |
+| 2. 목록 UI와 CSR 조회         | 헤더, 배너, 카드, 로딩·오류·빈 상태                   | 완료    |
+| 3. 반응형·접근성              | 2/3/4열, 라벨·포커스·대체 텍스트                      | 완료    |
+| 4. 검색·카테고리·페이지네이션 | `selectProducts` + 테스트 5개                         | 완료    |
+| 5. Supabase                   | 마이그레이션·seed를 CLI로 원격 적용                   | 완료    |
+| 6. 운영 보완                  | CI, keepalive 워크플로, README                        | 완료    |
+| 7. 배포·제출                  | GitHub 공개, Vercel 연결, URL 제출                    | 진행 중 |
 
 ### 남은 작업
 
@@ -28,15 +28,15 @@
 
 ## 계획 대비 변경
 
-| 처음 계획 | 변경 | 이유 |
-| --- | --- | --- |
-| 가격 정렬 | 카테고리 탭(전체·패스·단품) | Figma에 정렬이 없고 카테고리 탭이 있음. 원문 "화면에 보이는 부분 위주" |
-| `supabase/schema.sql`을 SQL Editor에서 실행 | `supabase/migrations/` + `supabase db push --include-seed` | 스키마 변경 이력을 저장소와 원격 DB에 남기기 위해 |
-| 카테고리 값 `'패스'`, `'단품'` | `'pass'`, `'single'` + `CATEGORY_LABEL` | DB에는 코드값, 화면 표기는 UI에서 매핑 |
-| npm | pnpm (`packageManager` 고정) | 사용자 선택 |
-| Pretendard | Noto Sans KR (`next/font/google`) | 폰트 파일을 저장소에 두지 않음. 정확한 Figma 폰트명은 확인 불가 |
-| 배너 HTML 재구성 | export 이미지 + `sr-only` 문구 | 배너 이미지에 문구가 포함되어 있어 중복 표시를 피함 |
-| `placeholder.webp` | `placeholder.svg` | 별도 이미지 파일 없이 SVG 한 개로 대체 |
+| 처음 계획                                     | 변경                                                                                     | 이유                                                                                       |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| 가격 정렬                                     | 카테고리 탭(전체·패스·단품)                                                              | Figma에 정렬이 없고 카테고리 탭이 있음. 원문 "화면에 보이는 부분 위주"                     |
+| `supabase/schema.sql`을 SQL Editor에서 실행   | `supabase/migrations/` + `supabase db push --include-seed`                               | 스키마 변경 이력을 저장소와 원격 DB에 남기기 위해                                          |
+| 카테고리 값 `'패스'`, `'단품'`                | `'pass'`, `'single'` + `CATEGORY_LABEL`                                                  | DB에는 코드값, 화면 표기는 UI에서 매핑                                                     |
+| npm                                           | pnpm (`packageManager` 고정)                                                             | 사용자 선택                                                                                |
+| Pretendard                                    | Noto Sans KR (`next/font/google`)                                                        | 폰트 파일을 저장소에 두지 않음. 정확한 Figma 폰트명은 확인 불가                            |
+| 배너 HTML 재구성                              | export 이미지 + `sr-only` 문구                                                           | 배너 이미지에 문구가 포함되어 있어 중복 표시를 피함                                        |
+| `placeholder.webp`                            | `placeholder.svg`                                                                        | 별도 이미지 파일 없이 SVG 한 개로 대체                                                     |
 | `components/`, `lib/`, feature 루트에 UI 파일 | `shared/{components,lib}`, `features/products/components/`, `index.ts`, ESLint 경계 규칙 | 공통 코드와 도메인 코드의 경계를 명확히 하고, 의존 방향·feature 간 참조 금지를 lint로 강제 |
 
 ## 검증 기록

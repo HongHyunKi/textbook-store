@@ -4,7 +4,8 @@ type PaginationProps = {
   onPageChange: (page: number) => void;
 };
 
-const buttonClass = "flex size-8 items-center justify-center rounded border text-sm disabled:cursor-default disabled:opacity-30";
+const buttonClass =
+  "flex size-8 items-center justify-center rounded border text-sm disabled:cursor-default disabled:opacity-30";
 
 export function Pagination({ page, pageCount, onPageChange }: PaginationProps) {
   if (pageCount <= 1) return null;

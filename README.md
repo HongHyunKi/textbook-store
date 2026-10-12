@@ -15,7 +15,7 @@ Figma 시안 기반 교재 목록 페이지 · Supabase 데이터 CSR 조회
 | 프레임워크 | Next.js 16 (App Router), React 19, TypeScript |
 | 스타일     | Tailwind CSS v4                               |
 | 데이터     | Supabase (PostgreSQL, RLS), TanStack Query v5 |
-| 테스트·CI  | Vitest, GitHub Actions                        |
+| 품질·CI    | Prettier, ESLint, Vitest, GitHub Actions      |
 | 배포       | Vercel                                        |
 
 ## 주요 기능
@@ -128,6 +128,7 @@ pnpm dlx supabase db push --include-seed   # 마이그레이션 + 더미 데이�
 ### 검증
 
 ```bash
+pnpm format:check   # Prettier (수정: pnpm format)
 pnpm lint
 pnpm test    # 검색·카테고리 필터 단위 테스트 5개
 pnpm build
@@ -137,7 +138,7 @@ pnpm build
 
 | 워크플로                                         | 내용                                                                                                                                  |
 | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
-| [ci.yml](.github/workflows/ci.yml)               | push·PR마다 lint → test → build                                                                                                       |
+| [ci.yml](.github/workflows/ci.yml)               | push·PR마다 format check → lint → test → build                                                                                        |
 | [keepalive.yml](.github/workflows/keepalive.yml) | 매일 1회 상품을 조회해 Supabase 무료 플랜의 비활성 일시정지를 방지. Actions secrets에 `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY` 필요 |
 
 ## 구현 범위

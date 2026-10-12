@@ -59,8 +59,10 @@ describe("selectProducts", () => {
   it("입력 순서를 유지하고 원본 배열을 변경하지 않는다", () => {
     const original = [...products];
 
-    expect(selectProducts(products, "hidden", "single").map((product) => product.id))
-      .toEqual(["3", "2"]);
+    expect(selectProducts(products, "hidden", "single").map((product) => product.id)).toEqual([
+      "3",
+      "2",
+    ]);
     expect(products).toEqual(original);
   });
 });

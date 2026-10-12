@@ -24,7 +24,10 @@ export function Banner() {
           </ul>
           <p>히든카이스 시리즈 보기</p>
         </div>
-        <p aria-hidden="true" className="absolute bottom-[4%] right-[2%] rounded-full bg-black/40 px-2 py-0.5 text-[10px] text-neutral-300 sm:text-xs">
+        <p
+          aria-hidden="true"
+          className="absolute bottom-[4%] right-[2%] rounded-full bg-black/40 px-2 py-0.5 text-[10px] text-neutral-300 sm:text-xs"
+        >
           <span className="text-white">1</span>/5
         </p>
       </div>

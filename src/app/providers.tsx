@@ -8,7 +8,5 @@ export function Providers({ children }: { children: ReactNode }) {
     () => new QueryClient({ defaultOptions: { queries: { retry: 1 } } }),
   );
 
-  return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 }

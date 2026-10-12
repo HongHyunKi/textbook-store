@@ -28,9 +28,7 @@ export function ProductCard({ product }: { product: Product }) {
           </p>
         )}
         <p className="flex flex-wrap items-baseline gap-x-2 font-bold">
-          {hasDiscount && (
-            <span className="text-brand-orange">{product.discount_rate}%</span>
-          )}
+          {hasDiscount && <span className="text-brand-orange">{product.discount_rate}%</span>}
           <span>{priceFormat.format(product.price)}원</span>
         </p>
       </div>

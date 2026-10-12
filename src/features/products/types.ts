@@ -1,7 +1,10 @@
 export type Category = "pass" | "single";
 export type CategoryFilter = "all" | Category;
 
-export const CATEGORY_LABEL: Record<Category, string> = { pass: "패스", single: "단품" };
+export const CATEGORY_LABEL: Record<Category, string> = {
+  pass: "패스",
+  single: "단품",
+};
 
 export type Product = {
   id: string;

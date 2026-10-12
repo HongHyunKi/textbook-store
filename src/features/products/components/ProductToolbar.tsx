@@ -61,7 +61,11 @@ export function ProductToolbar({
       <div role="group" aria-label="교재 카테고리" className="flex shrink-0 items-center text-sm">
         {categories.map(({ value, label }, index) => (
           <span key={value} className="flex items-center">
-            {index > 0 && <span aria-hidden="true" className="mx-3 text-gray-300">|</span>}
+            {index > 0 && (
+              <span aria-hidden="true" className="mx-3 text-gray-300">
+                |
+              </span>
+            )}
             <button
               type="button"
               aria-pressed={category === value}

@@ -39,7 +39,10 @@ export function Header() {
               <circle cx="9" cy="20" r="1" />
               <circle cx="18" cy="20" r="1" />
             </svg>
-            <span aria-hidden="true" className="absolute right-1 top-1 size-1.5 rounded-full bg-brand-purple" />
+            <span
+              aria-hidden="true"
+              className="absolute right-1 top-1 size-1.5 rounded-full bg-brand-purple"
+            />
           </button>
           <button
             type="button"
@@ -58,7 +61,10 @@ export function Header() {
             >
               <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" />
             </svg>
-            <span aria-hidden="true" className="absolute right-1 top-1 size-1.5 rounded-full bg-brand-purple" />
+            <span
+              aria-hidden="true"
+              className="absolute right-1 top-1 size-1.5 rounded-full bg-brand-purple"
+            />
           </button>
           <button
             type="button"

@@ -9,26 +9,53 @@ const eslintConfig = defineConfig([
   {
     files: ["src/**"],
     rules: {
-      "no-restricted-imports": ["error", { patterns: [
-        { group: ["@/features/*/*"], message: "feature는 index.ts(공개 진입점)로만 import합니다." },
-      ] }],
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["@/features/*/*"],
+              message: "feature는 index.ts(공개 진입점)로만 import합니다.",
+            },
+          ],
+        },
+      ],
     },
   },
   {
     files: ["src/features/**"],
     rules: {
-      "no-restricted-imports": ["error", { patterns: [
-        { group: ["@/features/*", "@/features/*/*"], message: "feature끼리는 참조하지 않습니다. 공통 코드는 shared로 옮깁니다." },
-        { group: ["@/app/*"], message: "feature는 app을 참조하지 않습니다." },
-      ] }],
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["@/features/*", "@/features/*/*"],
+              message: "feature끼리는 참조하지 않습니다. 공통 코드는 shared로 옮깁니다.",
+            },
+            {
+              group: ["@/app/*"],
+              message: "feature는 app을 참조하지 않습니다.",
+            },
+          ],
+        },
+      ],
     },
   },
   {
     files: ["src/shared/**"],
     rules: {
-      "no-restricted-imports": ["error", { patterns: [
-        { group: ["@/features/*", "@/features/*/*", "@/app/*"], message: "shared는 feature·app을 참조하지 않습니다." },
-      ] }],
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["@/features/*", "@/features/*/*", "@/app/*"],
+              message: "shared는 feature·app을 참조하지 않습니다.",
+            },
+          ],
+        },
+      ],
     },
   },
   // Override default ignores of eslint-config-next.
