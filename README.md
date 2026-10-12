@@ -2,11 +2,10 @@
 
 Figma 시안 기반 교재 목록 페이지 · Supabase 데이터 CSR 조회
 
-| 항목   | 링크                                                                                              |
-| ------ | ------------------------------------------------------------------------------------------------- |
-| 배포   | TBD                                                                                               |
-| 저장소 | TBD                                                                                               |
-| 문서   | [PRD](docs/PRD.md) · [Figma 분석](docs/figma-notes.md) · [구현 계획](docs/implementation-plan.md) |
+| 항목 | 링크                                                                                              |
+| ---- | ------------------------------------------------------------------------------------------------- |
+| 배포 | https://textbook-store.vercel.app                                                                 |
+| 문서 | [PRD](docs/PRD.md) · [Figma 분석](docs/figma-notes.md) · [구현 계획](docs/implementation-plan.md) |
 
 ## 기술 스택
 
