@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-brand-purple: #6d5df5;
+  --color-brand-orange: #f26b1d;
+  --color-line: #e9eaec;
+  --font-sans: var(--font-noto-sans-kr), Arial, sans-serif;
+}
+
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-brand-purple);
+    outline-offset: 4px;
+  }
+}
