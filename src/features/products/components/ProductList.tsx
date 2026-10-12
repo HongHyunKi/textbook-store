@@ -2,12 +2,12 @@
 
 import { useState, type JSX } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchProducts } from "./api";
+import { fetchProducts } from "../api";
 import { ProductCard } from "./ProductCard";
 import { ProductToolbar } from "./ProductToolbar";
-import { Pagination } from "@/components/ui/Pagination";
-import type { CategoryFilter } from "./types";
-import { PAGE_SIZE, selectProducts } from "./utils";
+import { Pagination } from "@/shared/components/ui/Pagination";
+import type { CategoryFilter } from "../types";
+import { PAGE_SIZE, selectProducts } from "../utils";
 
 export function ProductList(): JSX.Element {
   const [q, setQ] = useState("");

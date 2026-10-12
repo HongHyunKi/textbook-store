@@ -32,33 +32,44 @@ Figma 시안 기반 교재 목록 페이지 · Supabase 데이터 CSR 조회
 
 ```text
 src/
-├── app/                    # 라우팅, 레이아웃, 전역 Provider
-├── components/
-│   ├── layout/             # Header, Banner, Footer
-│   └── ui/                 # Pagination 등 범용 UI
+├── app/                        # 라우팅·페이지 조합, 전역 Provider
 ├── features/
-│   └── products/           # 상품 목록 기능
-│       ├── types.ts        #   도메인 타입
-│       ├── api.ts          #   Supabase 조회
-│       ├── utils.ts        #   검색·필터 순수 함수 (+ 테스트)
-│       └── Product*.tsx    #   목록·툴바·카드 UI
-└── lib/
-    └── supabase.ts         # Supabase 클라이언트
+│   └── products/               # 상품 목록 기능
+│       ├── components/         #   ProductList, ProductToolbar, ProductCard
+│       ├── api.ts              #   Supabase 조회
+│       ├── types.ts            #   도메인 타입
+│       ├── utils.ts            #   검색·필터 순수 함수 (+ 테스트)
+│       └── index.ts            #   외부 공개 진입점
+└── shared/                     # 도메인과 무관한 공통 코드
+    ├── components/
+    │   ├── layout/             #   Header, Banner, Footer
+    │   └── ui/                 #   Pagination
+    └── lib/
+        └── supabase.ts         #   Supabase 클라이언트
 supabase/
-├── migrations/             # 스키마·RLS 마이그레이션
-└── seed.sql                # 더미 데이터 36건
+├── migrations/                 # 스키마·RLS 마이그레이션
+└── seed.sql                    # 더미 데이터 36건
 ```
 
-### Feature-based 구조를 선택한 이유
+### Feature-based를 선택한 이유
 
-- **응집도**: 기능에 필요한 타입·API·로직·UI를 한 폴더에 배치
-- **역할 분리**: 조회(`api.ts`) · 순수 로직(`utils.ts`) · 화면(`*.tsx`)을 파일 단위로 분리해 독립적으로 테스트·교체
-- **단방향 의존**: `app → features·components → lib` 방향으로만 import
+- **응집도**: 기능에 필요한 타입·API·로직·UI가 한 폴더에 모여 구조 파악과 수정이 빠름
+- **변경 범위 예측**: 기능 단위로 수정·삭제·리팩터링해도 영향 범위가 해당 폴더로 한정
+- **FSD로 전환 용이**: 도메인 단위로 이미 나뉘어 있어 계층 구조로 옮기기 쉬움
+
+### 구조 규칙
+
+ESLint `no-restricted-imports`로 강제
+
+- **단방향 의존**: `app → features → shared` 방향으로만 import
+- **feature 간 참조 금지**: 여러 feature가 쓰는 코드는 `shared`로 이동
+- **공개 진입점**: feature 외부에서는 `index.ts`로만 import, 내부 구현은 숨김
+- **shared는 도메인 무관**: 특정 feature의 개념을 포함하지 않음
 
 ### 확장 방식
 
-- **새 기능**: `features/cart`, `features/product-detail` 폴더 추가 후 `app/` 라우트로 연결. 기존 기능 코드 변경 없음
-- **도메인 공유**: 여러 기능이 상품을 공유하면 `types`·`api`·`ProductCard`를 `entities/product`로 분리해 FSD 계층으로 확장
+- **새 기능**: `features/cart`처럼 같은 구조의 폴더를 추가하고 `app/` 라우트에서 조합. 기존 기능 코드 변경 없음
+- **도메인 공유**: 여러 feature가 상품을 함께 쓰면 `types`·`api`·`ProductCard`를 `entities/product`로 분리해 FSD 계층으로 확장
 - **데이터 증가**: 서버 검색(`ilike`)·`range` 페이지네이션으로 전환 시 변경 범위는 `api.ts`·`utils.ts`
 
 ## 설계 결정

@@ -1,4 +1,4 @@
-import { CATEGORY_LABEL, type CategoryFilter } from "./types";
+import { CATEGORY_LABEL, type CategoryFilter } from "../types";
 
 type ProductToolbarProps = {
   q: string;

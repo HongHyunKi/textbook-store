@@ -37,7 +37,7 @@
 | Pretendard | Noto Sans KR (`next/font/google`) | 폰트 파일을 저장소에 두지 않음. 정확한 Figma 폰트명은 확인 불가 |
 | 배너 HTML 재구성 | export 이미지 + `sr-only` 문구 | 배너 이미지에 문구가 포함되어 있어 중복 표시를 피함 |
 | `placeholder.webp` | `placeholder.svg` | 별도 이미지 파일 없이 SVG 한 개로 대체 |
-| `components/`에 레이아웃만, `Pagination`은 products 안 | `components/layout`, `components/ui/Pagination` | 레이아웃과 범용 UI의 역할을 구분. 다른 목록에서도 페이지네이션을 재사용 |
+| `components/`, `lib/`, feature 루트에 UI 파일 | `shared/{components,lib}`, `features/products/components/`, `index.ts`, ESLint 경계 규칙 | 공통 코드와 도메인 코드의 경계를 명확히 하고, 의존 방향·feature 간 참조 금지를 lint로 강제 |
 
 ## 검증 기록
 

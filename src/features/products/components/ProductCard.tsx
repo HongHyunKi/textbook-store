@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { CATEGORY_LABEL, type Product } from "./types";
+import { CATEGORY_LABEL, type Product } from "../types";
 
 const priceFormat = new Intl.NumberFormat("ko-KR");
 

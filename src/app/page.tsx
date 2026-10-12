@@ -1,7 +1,7 @@
-import { Banner } from "@/components/layout/Banner";
-import { Footer } from "@/components/layout/Footer";
-import { Header } from "@/components/layout/Header";
-import { ProductList } from "@/features/products/ProductList";
+import { Banner } from "@/shared/components/layout/Banner";
+import { Footer } from "@/shared/components/layout/Footer";
+import { Header } from "@/shared/components/layout/Header";
+import { ProductList } from "@/features/products";
 
 export default function Home() {
   return (

@@ -192,16 +192,15 @@ Figma 카드에 쓰이지 않는 `description`은 넣지 않았다. Figma의 76,
 
 ## 11. 폴더 구조
 
-기능 단위로 관련 코드를 모은다. 과제 규모에 맞게 하위 폴더(`components/`, `hooks/`)는 나누지 않았다. 전체 구조는 README를 본다.
+기능 단위로 관련 코드를 모으고 공통 코드는 `shared/`에 둔다. 의존 방향(`app → features → shared`), feature 간 참조 금지, `index.ts` 공개 진입점 규칙을 ESLint로 강제한다. 전체 구조와 이유는 README를 본다.
 
 ```text
 src/
-  app/                 # layout, page, providers(QueryClient), globals.css
-  components/
-    layout/            # Header, Banner, Footer (공통 레이아웃)
-    ui/                # Pagination (범용 UI)
-  features/products/   # types, api, utils(+test), ProductList, ProductToolbar, ProductCard
-  lib/supabase.ts      # Supabase 클라이언트
+  app/                 # 라우팅·페이지 조합, layout, providers(QueryClient), globals.css
+  features/products/   # components/(ProductList, ProductToolbar, ProductCard), api, types, utils(+test), index.ts
+  shared/
+    components/        # layout/(Header, Banner, Footer), ui/(Pagination)
+    lib/supabase.ts    # Supabase 클라이언트
 supabase/
   migrations/          # 스키마·RLS 마이그레이션
   seed.sql             # 더미 교재 36건
