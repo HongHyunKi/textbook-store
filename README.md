@@ -1,22 +1,22 @@
-# 히든카이스 스토어
+# textbook-store
 
 Figma 시안 기반 교재 목록 페이지 · Supabase 데이터 CSR 조회
 
-| 항목 | 링크 |
-| --- | --- |
-| 배포 | TBD |
-| 저장소 | TBD |
-| 문서 | [PRD](docs/PRD.md) · [Figma 분석](docs/figma-notes.md) · [구현 계획](docs/implementation-plan.md) |
+| 항목   | 링크                                                                                              |
+| ------ | ------------------------------------------------------------------------------------------------- |
+| 배포   | TBD                                                                                               |
+| 저장소 | TBD                                                                                               |
+| 문서   | [PRD](docs/PRD.md) · [Figma 분석](docs/figma-notes.md) · [구현 계획](docs/implementation-plan.md) |
 
 ## 기술 스택
 
-| 영역 | 사용 기술 |
-| --- | --- |
+| 영역       | 사용 기술                                     |
+| ---------- | --------------------------------------------- |
 | 프레임워크 | Next.js 16 (App Router), React 19, TypeScript |
-| 스타일 | Tailwind CSS v4 |
-| 데이터 | Supabase (PostgreSQL, RLS), TanStack Query v5 |
-| 테스트·CI | Vitest, GitHub Actions |
-| 배포 | Vercel |
+| 스타일     | Tailwind CSS v4                               |
+| 데이터     | Supabase (PostgreSQL, RLS), TanStack Query v5 |
+| 테스트·CI  | Vitest, GitHub Actions                        |
+| 배포       | Vercel                                        |
 
 ## 주요 기능
 
@@ -74,30 +74,30 @@ ESLint `no-restricted-imports`로 강제
 
 ## 설계 결정
 
-| 결정 | 이유 |
-| --- | --- |
+| 결정                                   | 이유                                                                                     |
+| -------------------------------------- | ---------------------------------------------------------------------------------------- |
 | 서버 페이지 + 클라이언트 목록 컴포넌트 | 정적 레이아웃은 서버에서 렌더링하고, 상품 조회만 브라우저에서 수행해 CSR 요구사항을 충족 |
-| TanStack Query | 로딩·오류·재시도·캐시 상태를 직접 구현하지 않고 선언적으로 처리 |
-| 클라이언트 필터링 | 데이터 36건 규모에서 요청 1회로 검색·필터·페이지네이션을 처리하고, 순수 함수로 테스트 |
-| 카테고리 코드값 (`pass`, `single`) | DB에는 코드값을 저장하고 화면 표기는 `CATEGORY_LABEL`에서 매핑 |
-| 할인가 비계산 | Figma 수치(76,000원 · 5% · 64,800원)를 그대로 재현하도록 원가·할인율·판매가를 각각 저장 |
-| 이미지 `public/` 경로 저장 | 과제 범위에서 별도 스토리지 없이 재현 가능. 운영 시 Supabase Storage로 전환 |
-| Supabase 클라이언트 지연 생성 | 환경변수 없이도 lint·test·build가 가능 |
+| TanStack Query                         | 로딩·오류·재시도·캐시 상태를 직접 구현하지 않고 선언적으로 처리                          |
+| 클라이언트 필터링                      | 데이터 36건 규모에서 요청 1회로 검색·필터·페이지네이션을 처리하고, 순수 함수로 테스트    |
+| 카테고리 코드값 (`pass`, `single`)     | DB에는 코드값을 저장하고 화면 표기는 `CATEGORY_LABEL`에서 매핑                           |
+| 할인가 비계산                          | Figma 수치(76,000원 · 5% · 64,800원)를 그대로 재현하도록 원가·할인율·판매가를 각각 저장  |
+| 이미지 `public/` 경로 저장             | 과제 범위에서 별도 스토리지 없이 재현 가능. 운영 시 Supabase Storage로 전환              |
+| Supabase 클라이언트 지연 생성          | 환경변수 없이도 lint·test·build가 가능                                                   |
 
 ## 데이터베이스
 
 `products` 테이블 · 스키마와 권한은 [마이그레이션](supabase/migrations/)으로 관리
 
-| 컬럼 | 타입 | 설명 |
-| --- | --- | --- |
-| `id` | uuid | 기본 키 |
-| `title` | text | 교재명 |
-| `category` | text | `pass` 또는 `single` |
-| `image_url` | text | 이미지 경로 |
-| `price` | integer | 판매가 |
-| `original_price` | integer | 원가 (할인 시) |
-| `discount_rate` | integer | 할인율 0~100 (할인 시) |
-| `created_at` | timestamptz | 생성 시각, 기본 정렬 기준 |
+| 컬럼             | 타입        | 설명                      |
+| ---------------- | ----------- | ------------------------- |
+| `id`             | uuid        | 기본 키                   |
+| `title`          | text        | 교재명                    |
+| `category`       | text        | `pass` 또는 `single`      |
+| `image_url`      | text        | 이미지 경로               |
+| `price`          | integer     | 판매가                    |
+| `original_price` | integer     | 원가 (할인 시)            |
+| `discount_rate`  | integer     | 할인율 0~100 (할인 시)    |
+| `created_at`     | timestamptz | 생성 시각, 기본 정렬 기준 |
 
 - **RLS**: `anon`·`authenticated`에 SELECT만 허용, 쓰기 요청은 `42501`로 거부
 - **키**: 브라우저에는 publishable key만 노출
@@ -112,9 +112,9 @@ cp .env.example .env.local   # 환경변수 입력
 pnpm dev                     # http://localhost:3000
 ```
 
-| 환경변수 | 설명 |
-| --- | --- |
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase 프로젝트 URL |
+| 환경변수                               | 설명                     |
+| -------------------------------------- | ------------------------ |
+| `NEXT_PUBLIC_SUPABASE_URL`             | Supabase 프로젝트 URL    |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Supabase publishable key |
 
 ### Supabase 설정
@@ -135,9 +135,9 @@ pnpm build
 
 ## CI / 운영
 
-| 워크플로 | 내용 |
-| --- | --- |
-| [ci.yml](.github/workflows/ci.yml) | push·PR마다 lint → test → build |
+| 워크플로                                         | 내용                                                                                                                                  |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- |
+| [ci.yml](.github/workflows/ci.yml)               | push·PR마다 lint → test → build                                                                                                       |
 | [keepalive.yml](.github/workflows/keepalive.yml) | 매일 1회 상품을 조회해 Supabase 무료 플랜의 비활성 일시정지를 방지. Actions secrets에 `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY` 필요 |
 
 ## 구현 범위
