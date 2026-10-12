@@ -12,7 +12,7 @@
 | 1. 골격                       | Next.js 16 + Tailwind v4 + React Query + Vitest, pnpm | 완료    |
 | 2. 목록 UI와 CSR 조회         | 헤더, 배너, 카드, 로딩·오류·빈 상태                   | 완료    |
 | 3. 반응형·접근성              | 2/3/4열, 라벨·포커스·대체 텍스트                      | 완료    |
-| 4. 검색·카테고리·페이지네이션 | `selectProducts` + 테스트 5개                         | 완료    |
+| 4. 검색·카테고리·페이지네이션 | 서버 페이지네이션(`range`+`count`), 디바운스, 테스트  | 완료    |
 | 5. Supabase                   | 마이그레이션·seed를 CLI로 원격 적용                   | 완료    |
 | 6. 운영 보완                  | CI, keepalive 워크플로, README                        | 완료    |
 | 7. 배포·제출                  | GitHub 공개, Vercel 연결, URL 제출                    | 진행 중 |
@@ -49,8 +49,8 @@
 
 ## ADR
 
-- **Decision**: App Router 서버 페이지 안에 클라이언트 컴포넌트 `ProductList`를 두고, `features/products/api.ts`의 `fetchProducts()`를 React Query `useQuery`(`retry: 1`)로 브라우저에서 호출한다. 검색과 카테고리 필터는 순수 함수 `selectProducts`로 처리하고 `slice`로 페이지를 나눈다. Supabase는 RLS + `revoke all` + `grant select` + SELECT 정책 하나로 읽기만 허용하고, 브라우저에는 publishable key만 둔다. 스키마는 CLI 마이그레이션으로 관리한다.
+- **Decision**: App Router 서버 페이지 안에 클라이언트 컴포넌트 `ProductList`를 두고, `features/products/api.ts`의 `fetchProducts()`를 React Query `useQuery`(`retry: 1`)로 브라우저에서 호출한다. 검색(`ilike`)·카테고리(`eq`)·페이지(`range`, `count: exact`)는 Supabase에서 적용해 필요한 12건만 받는다. 파라미터는 `{ page, q, category }`이고 offset 계산은 도메인과 무관한 `shared/lib/query.ts`의 `pageToRange`가 맡는다. Supabase는 RLS + `revoke all` + `grant select` + SELECT 정책 하나로 읽기만 허용하고, 브라우저에는 publishable key만 둔다. 스키마는 CLI 마이그레이션으로 관리한다.
 - **Drivers**: 마감 안정성, CSR 요구 충족, 면접에서 설명하기 쉬운 구조.
-- **Alternatives considered**: `useEffect` 직접 fetch(상태·경합·재시도를 손으로 작성해야 함), Server Component fetch(CSR 요구 위반), Supabase 서버 검색과 `range` 페이지네이션(36건에는 과함), SQL Editor 직접 실행(이력이 남지 않음).
+- **Alternatives considered**: `useEffect` 직접 fetch(상태·경합·재시도를 손으로 작성해야 함), Server Component fetch(CSR 요구 위반), 전체 조회 후 클라이언트 필터(데이터가 늘면 전송량이 커져 서버 페이지네이션으로 전환), 커서(keyset) 페이지네이션(페이지 번호로 바로 이동 불가), SQL Editor 직접 실행(이력이 남지 않음).
 - **Consequences**: 전체 데이터를 한 번에 받으므로 수천 건 이상에는 부적합하다. 이미지는 `public/`에 있어 교체하려면 재배포가 필요하다.
-- **Follow-ups**: 상품을 공유하는 기능(상세, 장바구니)이 생기면 `entities/product`와 `features/product-filter`로 나누고 `shared` 계층을 두어 FSD로 확장한다. 데이터가 늘면 서버 검색(`ilike`)과 `range` 페이지네이션으로 전환하고 검색 조건을 query key에 넣는다. 이미지 관리가 필요하면 Supabase Storage와 `remotePatterns`를 도입한다.
+- **Follow-ups**: 상품을 공유하는 기능(상세, 장바구니)이 생기면 `entities/product`와 `features/product-filter`로 나누고 `shared` 계층을 두어 FSD로 확장한다. 데이터가 늘면 검색용 `pg_trgm` GIN 인덱스와 정렬용 `(created_at, id)` 인덱스를 추가한다. `count: exact` 비용이 커지면 `planned`로 바꾼다. 이미지 관리가 필요하면 Supabase Storage와 `remotePatterns`를 도입한다.

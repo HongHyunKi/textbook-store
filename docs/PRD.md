@@ -153,7 +153,7 @@ Figma 카드에 쓰이지 않는 `description`은 넣지 않았다. Figma의 76,
 - 검색어 앞뒤 공백을 정리한다.
 - 결과가 없으면 빈 결과 안내를 보여준다.
 - 검색 기준과 입력 UI가 명확하며, 검색어를 지울 수 있다.
-- 데이터가 36건이므로 전체를 한 번 조회한 뒤 클라이언트에서 필터한다. 이유와 한계는 README에 적는다.
+- 검색과 카테고리 필터는 서버(Supabase `ilike`·`eq`)에서 적용하고, 필요한 페이지만 `range`로 조회한다. 입력은 300ms 디바운스 후 요청한다.
 
 ### 카테고리 필터 (추가)
 
@@ -186,7 +186,7 @@ Figma 카드에 쓰이지 않는 `description`은 넣지 않았다. Figma의 76,
 - Tailwind CSS v4
 - Supabase JS client: `getSupabase()`로 지연 생성하고 브라우저에서만 호출
 - TanStack Query v5: 조회의 로딩·오류·재시도(1회)·캐시만 담당. 별도 상태 라이브러리는 쓰지 않는다
-- Vitest: 검색·카테고리 필터 순수 함수 단위 테스트
+- Vitest: 페이지 범위·검색 패턴 이스케이프 순수 함수 단위 테스트
 - 패키지 매니저 pnpm, Supabase CLI(`pnpm dlx supabase`)
 - Vercel 배포, GitHub Actions(CI, Supabase keepalive)
 
@@ -197,10 +197,11 @@ Figma 카드에 쓰이지 않는 `description`은 넣지 않았다. Figma의 76,
 ```text
 src/
   app/                 # 라우팅·페이지 조합, layout, providers(QueryClient), globals.css
-  features/products/   # components/(ProductList, ProductToolbar, ProductCard), api, types, utils(+test), index.ts
+  features/products/   # components/(ProductList, ProductToolbar, ProductCard), api, types, index.ts
   shared/
     components/        # layout/(Header, Banner, Footer), ui/(Pagination)
-    lib/supabase.ts    # Supabase 클라이언트
+    hooks/             # useDebouncedValue
+    lib/               # supabase.ts(클라이언트), query.ts(페이지 범위·LIKE 이스케이프 + 테스트)
 supabase/
   migrations/          # 스키마·RLS 마이그레이션
   seed.sql             # 더미 교재 36건

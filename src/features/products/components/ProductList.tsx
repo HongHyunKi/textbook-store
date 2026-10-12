@@ -1,44 +1,45 @@
 "use client";
 
 import { useState, type JSX } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { fetchProducts } from "../api";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { Pagination } from "@/shared/components/ui/Pagination";
+import { useDebouncedValue } from "@/shared/hooks/useDebouncedValue";
+import { fetchProducts, PAGE_SIZE } from "../api";
+import type { CategoryFilter } from "../types";
 import { ProductCard } from "./ProductCard";
 import { ProductToolbar } from "./ProductToolbar";
-import { Pagination } from "@/shared/components/ui/Pagination";
-import type { CategoryFilter } from "../types";
-import { PAGE_SIZE, selectProducts } from "../utils";
+
+const SEARCH_DEBOUNCE_MS = 300;
 
 export function ProductList(): JSX.Element {
   const [q, setQ] = useState("");
   const [category, setCategory] = useState<CategoryFilter>("all");
   const [page, setPage] = useState(1);
-  const {
-    data = [],
-    isPending,
-    isLoadingError,
-    isFetching,
-    refetch,
-  } = useQuery({
-    queryKey: ["products"],
-    queryFn: fetchProducts,
-  });
-  const filteredProducts = selectProducts(data, q, category);
-  const pageCount = Math.ceil(filteredProducts.length / PAGE_SIZE);
-  const currentPage = Math.min(page, Math.max(1, pageCount));
-  const visibleProducts = filteredProducts.slice(
-    (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE,
-  );
+  // 입력창은 즉시 반영하고, 서버 요청은 입력이 멈춘 뒤에만 보낸다.
+  const debouncedQ = useDebouncedValue(q.trim(), SEARCH_DEBOUNCE_MS);
 
-  function changeQuery(value: string) {
-    setQ(value);
+  // 검색어(디바운스 반영 후)나 카테고리가 바뀌면 1페이지로 돌아간다.
+  const filterKey = `${debouncedQ}|${category}`;
+  const [prevFilterKey, setPrevFilterKey] = useState(filterKey);
+  if (prevFilterKey !== filterKey) {
+    setPrevFilterKey(filterKey);
     setPage(1);
   }
 
-  function changeCategory(value: CategoryFilter) {
-    setCategory(value);
-    setPage(1);
+  const { data, isPending, isLoadingError, isFetching, isPlaceholderData, refetch } = useQuery({
+    queryKey: ["products", { page, q: debouncedQ, category }],
+    queryFn: () => fetchProducts({ page, q: debouncedQ, category }),
+    // 페이지·필터를 바꾸는 동안 이전 목록을 유지해 스켈레톤 깜빡임과 레이아웃 이동을 막는다.
+    placeholderData: keepPreviousData,
+  });
+  const items = data?.items ?? [];
+  const total = data?.total ?? 0;
+  const pageCount = Math.ceil(total / PAGE_SIZE);
+  const isUnfiltered = debouncedQ === "" && category === "all";
+
+  function resetFilters() {
+    setQ("");
+    setCategory("all");
   }
 
   let content: JSX.Element;
@@ -65,13 +66,13 @@ export function ProductList(): JSX.Element {
         </button>
       </div>
     );
-  } else if (data.length === 0) {
+  } else if (total === 0 && isUnfiltered) {
     content = (
       <p role="status" className="py-24 text-center text-body text-text-secondary">
         등록된 교재가 없습니다
       </p>
     );
-  } else if (filteredProducts.length === 0) {
+  } else if (total === 0) {
     content = (
       <div className="py-24 text-center">
         <p role="status" className="text-body text-text-secondary">
@@ -79,10 +80,7 @@ export function ProductList(): JSX.Element {
         </p>
         <button
           type="button"
-          onClick={() => {
-            changeQuery("");
-            changeCategory("all");
-          }}
+          onClick={resetFilters}
           className="mt-4 rounded-base border border-border-secondary px-4 py-2 text-body-sm hover:bg-surface-muted"
         >
           검색 초기화
@@ -92,7 +90,7 @@ export function ProductList(): JSX.Element {
   } else {
     content = (
       <div className={GRID_CLASS}>
-        {visibleProducts.map((product) => (
+        {items.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
@@ -104,15 +102,18 @@ export function ProductList(): JSX.Element {
       <ProductToolbar
         q={q}
         category={category}
-        onQueryChange={changeQuery}
-        onCategoryChange={changeCategory}
+        onQueryChange={setQ}
+        onCategoryChange={setCategory}
       />
       {/* 결과가 줄어도 검색창 아래가 최소 한 화면을 채워, 푸터가 화면 안으로 당겨 올라오는 레이아웃 이동(CLS)을 막는다 */}
-      <div className="min-h-svh">{content}</div>
+      <div
+        aria-busy={isFetching}
+        className={`min-h-svh transition-opacity ${isPlaceholderData ? "opacity-60" : ""}`}
+      >
+        {content}
+      </div>
       <div className="mt-[46px] min-h-10">
-        {!isPending && filteredProducts.length > 0 && (
-          <Pagination page={currentPage} pageCount={pageCount} onPageChange={setPage} />
-        )}
+        {total > 0 && <Pagination page={page} pageCount={pageCount} onPageChange={setPage} />}
       </div>
     </>
   );
