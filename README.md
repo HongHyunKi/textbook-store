@@ -7,6 +7,12 @@ Figma의 교재 목록 화면을 구현한 Next.js 과제입니다. Supabase의 
 
 기술 구성은 Next.js 16.4 App Router, React 19, TypeScript, Tailwind CSS v4, Supabase JS, TanStack Query v5, Vitest입니다.
 
+요구사항과 결정 기록은 [docs/](docs/)에 있습니다.
+
+- [PRD](docs/PRD.md): 과제 요구사항과 범위
+- [Figma 확인 결과](docs/figma-notes.md): 화면 구성과 구현 시 반영 내용
+- [구현 계획과 진행 상황](docs/implementation-plan.md): 계획 대비 변경, 검증 기록, ADR, 남은 작업
+
 ## 로컬 실행
 
 Node.js 24와 pnpm을 사용합니다. 저장소를 clone한 폴더에서 실행합니다.
@@ -46,7 +52,7 @@ pnpm dev
    - 더미 데이터: [supabase/seed.sql](supabase/seed.sql)
 3. `.env.local`에 두 값을 넣고 개발 서버를 시작합니다.
 
-`products`의 컬럼은 `id`, `title`, `category`, `image_url`, `price`, `original_price`, `discount_rate`, `created_at`입니다. 카테고리는 `pass`(패스) 또는 `single`(단품)이며 화면 표기는 `CATEGORY_LABEL`에서 매핑합니다, 가격은 0 이상, 할인율은 null 또는 0~100입니다.
+`products`의 컬럼은 `id`, `title`, `category`, `image_url`, `price`, `original_price`, `discount_rate`, `created_at`입니다. 카테고리는 `pass`(패스) 또는 `single`(단품)이며 화면 표기는 `CATEGORY_LABEL`에서 매핑합니다. 가격은 0 이상, 할인율은 null 또는 0~100입니다.
 
 RLS를 활성화하고 `anon`, `authenticated`의 기존 테이블 권한을 회수한 뒤 SELECT 권한과 조회 정책 하나만 부여합니다. 브라우저에서 상품을 추가·수정·삭제할 수 없습니다.
 
@@ -131,6 +137,10 @@ supabase/
 .github/workflows/
   ci.yml
   keepalive.yml
+docs/
+  PRD.md
+  figma-notes.md
+  implementation-plan.md
 ```
 
 ## 설계 결정
