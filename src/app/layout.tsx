@@ -1,14 +1,8 @@
 import type { Metadata } from "next";
-import { Noto_Sans_KR } from "next/font/google";
 import type { ReactNode } from "react";
 import { Providers } from "@/app/providers";
+import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 import "./globals.css";
-
-const notoSansKR = Noto_Sans_KR({
-  variable: "--font-noto-sans-kr",
-  subsets: ["latin"],
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "히든카이스 스토어",
@@ -17,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="ko" className={`${notoSansKR.variable} font-sans antialiased`}>
+    <html lang="ko" className="font-sans antialiased">
       <body className="flex min-h-screen flex-col">
         <Providers>{children}</Providers>
       </body>

@@ -73,7 +73,7 @@
 
 - 포인트: 보라(로고, 활성 메뉴, 활성 페이지), 주황(할인율, 배너 강조)
 - 한글 산세리프 (Pretendard 계열로 보임. Dev Mode 권한이 없어 정확한 폰트명·hex는 확인 못 함)
-- → 구현: 폰트는 `next/font/google`의 Noto Sans KR(폰트 파일을 저장소에 두지 않으려고 선택). 색은 근사값 보라 `#6D5DF5`, 주황 `#F26B1D`, 테두리 `#E9EAEC`
+- → 구현 (2026-10-13 디자인 사양 수령 후 재적용): Pretendard(400·500·600), 타이포 5단계, 색상 16종, 모서리 6px·pill 999px, 그림자를 `src/app/globals.css`의 `@theme` 토큰으로 정의. 상세 값은 아래 "디자인 사양" 참고
 
 ## 에셋
 
@@ -86,3 +86,41 @@
 2. **페이지네이션은 만든다.** PAGE_SIZE=12, 검색어나 카테고리가 바뀌면 1페이지로
 3. 스키마: `title`, `category`, `image_url`, `price`(판매가), `original_price`(nullable), `discount_rate`(nullable), `created_at`
 4. 반응형 열 수 (Figma에 모바일 없음 → 직접 정함): 375px 2열 · 768px 3열 · 1280px 4열
+
+## 디자인 사양 (2026-10-13 수령)
+
+### 타이포그래피 (Pretendard, 자간 0)
+
+| 토큰                  | 크기 | 굵기 | 행간 | 용도           |
+| --------------------- | ---- | ---- | ---- | -------------- |
+| `text-body-lg`        | 18px | 600  | 160% | 큰 본문, GNB   |
+| `text-body`           | 16px | 600  | 160% | 기본 본문      |
+| `text-body-sm`        | 14px | 500  | 150% | 작은 본문      |
+| `text-body-sm-strong` | 14px | 600  | 150% | 작은 본문 강조 |
+| `text-caption`        | 10px | 400  | 140% | 소형 숫자 표시 |
+
+### 색상
+
+| 토큰                 | 값              | 용도                                                                |
+| -------------------- | --------------- | ------------------------------------------------------------------- |
+| `background`         | #FFFFFF         | 기본 배경                                                           |
+| `background-subtle`  | #FAFAFA         | 프로모션 배너 배경 (구현은 배너 이미지와 이어지도록 `#0C0C0C` 유지) |
+| `surface-muted`      | #F2F5F8         | 보조 영역 배경 (스켈레톤)                                           |
+| `primary`            | #7F77DD         | 주요 강조색                                                         |
+| `text-primary`       | #000000         | 상품명 등 주요 텍스트                                               |
+| `text-dark`          | #1C1E21         | 일부 라벨                                                           |
+| `text-secondary`     | #979CA5         | GNB 라벨, 보조 텍스트                                               |
+| `text-muted`         | #B2B6BD         | 원가 등 보조 텍스트                                                 |
+| `border-default`     | #E9EAEC         | 카드 테두리                                                         |
+| `border-secondary`   | #CED0D4         | 입력창·버튼 테두리                                                  |
+| `border-banner`      | #E5E5E5         | 배너 테두리                                                         |
+| `icon-stroke`        | #636873         | 아이콘 선                                                           |
+| `discount`           | #FA622F         | 할인율                                                              |
+| `discount-alternate` | #EF4444         | 일부 할인율 (사용처 미확인, 토큰만 정의)                            |
+| `overlay`            | rgba(0,0,0,0.3) | 반투명 배경 (배너 `1/5`)                                            |
+
+### 모서리·그림자·간격
+
+- `rounded-base` 6px, `rounded-pill` 999px, `shadow-base` 0 3px 4px rgba(0,0,0,0.12)
+- 간격 4·6·8·10·16·20px는 Tailwind 기본 스케일(4px 단위)로 표현
+- 주의: Figma 스타일 이름보다 실제 속성값 기준. 할인 색상 두 가지는 통일하지 않음

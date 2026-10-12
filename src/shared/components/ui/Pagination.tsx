@@ -5,7 +5,7 @@ type PaginationProps = {
 };
 
 const buttonClass =
-  "flex size-8 items-center justify-center rounded border text-sm disabled:cursor-default disabled:opacity-30";
+  "flex size-8 items-center justify-center rounded-base border text-body-sm disabled:opacity-30";
 
 export function Pagination({ page, pageCount, onPageChange }: PaginationProps) {
   if (pageCount <= 1) return null;
@@ -17,7 +17,7 @@ export function Pagination({ page, pageCount, onPageChange }: PaginationProps) {
         aria-label="이전 페이지"
         disabled={page === 1}
         onClick={() => onPageChange(page - 1)}
-        className={`${buttonClass} border-line text-gray-500`}
+        className={`${buttonClass} border-border-default text-text-secondary enabled:hover:border-border-secondary enabled:hover:text-text-dark`}
       >
         {"<"}
       </button>
@@ -28,7 +28,7 @@ export function Pagination({ page, pageCount, onPageChange }: PaginationProps) {
           aria-label={`${number}페이지`}
           aria-current={page === number ? "page" : undefined}
           onClick={() => onPageChange(number)}
-          className={`${buttonClass} ${page === number ? "border-brand-purple bg-brand-purple text-white" : "border-line text-gray-500"}`}
+          className={`${buttonClass} ${page === number ? "border-primary bg-primary text-background" : "border-border-default text-text-secondary enabled:hover:border-border-secondary enabled:hover:text-text-dark"}`}
         >
           {number}
         </button>
@@ -38,7 +38,7 @@ export function Pagination({ page, pageCount, onPageChange }: PaginationProps) {
         aria-label="다음 페이지"
         disabled={page === pageCount}
         onClick={() => onPageChange(page + 1)}
-        className={`${buttonClass} border-line text-gray-500`}
+        className={`${buttonClass} border-border-default text-text-secondary enabled:hover:border-border-secondary enabled:hover:text-text-dark`}
       >
         {">"}
       </button>

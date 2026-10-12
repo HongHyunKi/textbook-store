@@ -20,8 +20,8 @@ export function ProductToolbar({
   onCategoryChange,
 }: ProductToolbarProps) {
   return (
-    <div className="mb-8 flex flex-col items-end justify-end gap-4 sm:flex-row sm:items-center sm:gap-6">
-      <div className="relative w-full sm:w-60">
+    <div className="mb-9 flex flex-col items-end justify-end gap-4 sm:flex-row sm:items-center sm:gap-[17px]">
+      <div className="relative w-full sm:w-[250px]">
         <label htmlFor="product-search" className="sr-only">
           교재명 검색
         </label>
@@ -31,7 +31,7 @@ export function ProductToolbar({
           fill="none"
           stroke="currentColor"
           strokeWidth="1.5"
-          className="pointer-events-none absolute top-3 left-3 size-4 text-gray-500"
+          className="pointer-events-none absolute top-[11px] left-2 size-5 text-icon-stroke"
         >
           <circle cx="10.5" cy="10.5" r="6.5" />
           <path d="m16 16 4.5 4.5" />
@@ -42,7 +42,7 @@ export function ProductToolbar({
           value={q}
           onChange={(event) => onQueryChange(event.target.value)}
           placeholder="검색"
-          className="h-10 w-full rounded border border-line pr-10 pl-9 text-sm [&::-webkit-search-cancel-button]:appearance-none"
+          className="h-[42px] w-full rounded-base border border-border-secondary pr-8 pl-[34px] text-body text-text-dark placeholder:text-text-secondary [&::-webkit-search-cancel-button]:appearance-none"
         />
         {q && (
           <button
@@ -52,17 +52,31 @@ export function ProductToolbar({
               onQueryChange("");
               document.getElementById("product-search")?.focus();
             }}
-            className="absolute top-0 right-0 flex size-10 items-center justify-center text-xl text-gray-500"
+            className="absolute top-0 right-0 flex h-[42px] w-8 items-center justify-center text-icon-stroke"
           >
-            ×
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              className="size-4"
+            >
+              <path d="m4 4 8 8M12 4l-8 8" />
+            </svg>
           </button>
         )}
       </div>
-      <div role="group" aria-label="교재 카테고리" className="flex shrink-0 items-center text-sm">
+      <div
+        role="group"
+        aria-label="교재 카테고리"
+        className="flex shrink-0 items-center gap-[11px] text-body"
+      >
         {categories.map(({ value, label }, index) => (
-          <span key={value} className="flex items-center">
+          <span key={value} className="flex items-center gap-[11px]">
             {index > 0 && (
-              <span aria-hidden="true" className="mx-3 text-gray-300">
+              <span aria-hidden="true" className="text-text-secondary">
                 |
               </span>
             )}
@@ -70,7 +84,9 @@ export function ProductToolbar({
               type="button"
               aria-pressed={category === value}
               onClick={() => onCategoryChange(value)}
-              className={`py-2 ${category === value ? "font-bold text-gray-900" : "text-gray-500"}`}
+              className={
+                category === value ? "text-text-dark" : "text-text-secondary hover:text-text-dark"
+              }
             >
               {label}
             </button>

@@ -10,13 +10,13 @@ Figma 시안 기반 교재 목록 페이지 · Supabase 데이터 CSR 조회
 
 ## 기술 스택
 
-| 영역       | 사용 기술                                     |
-| ---------- | --------------------------------------------- |
-| 프레임워크 | Next.js 16 (App Router), React 19, TypeScript |
-| 스타일     | Tailwind CSS v4                               |
-| 데이터     | Supabase (PostgreSQL, RLS), TanStack Query v5 |
-| 품질·CI    | Prettier, ESLint, Vitest, GitHub Actions      |
-| 배포       | Vercel                                        |
+| 영역       | 사용 기술                                          |
+| ---------- | -------------------------------------------------- |
+| 프레임워크 | Next.js 16 (App Router), React 19, TypeScript      |
+| 스타일     | Tailwind CSS v4 (`@theme` 디자인 토큰), Pretendard |
+| 데이터     | Supabase (PostgreSQL, RLS), TanStack Query v5      |
+| 품질·CI    | Prettier, ESLint, Vitest, GitHub Actions           |
+| 배포       | Vercel                                             |
 
 ## 주요 기능
 
@@ -83,6 +83,19 @@ ESLint `no-restricted-imports`로 강제
 | 할인가 비계산                          | Figma 수치(76,000원 · 5% · 64,800원)를 그대로 재현하도록 원가·할인율·판매가를 각각 저장  |
 | 이미지 `public/` 경로 저장             | 과제 범위에서 별도 스토리지 없이 재현 가능. 운영 시 Supabase Storage로 전환              |
 | Supabase 클라이언트 지연 생성          | 환경변수 없이도 lint·test·build가 가능                                                   |
+
+## 디자인 시스템
+
+Figma 디자인 사양을 [`globals.css`](src/app/globals.css)의 `@theme` 토큰으로 정의하고, 컴포넌트에서는 토큰 클래스만 사용
+
+| 분류          | 토큰                                                                                                         |
+| ------------- | ------------------------------------------------------------------------------------------------------------ |
+| 타이포그래피  | `text-body-lg` · `text-body` · `text-body-sm` · `text-body-sm-strong` · `text-caption` (크기·행간·굵기 포함) |
+| 색상          | `primary`, `text-primary/dark/secondary/muted`, `border-default/secondary/banner`, `discount` 등 16종        |
+| 모서리·그림자 | `rounded-base`(6px), `rounded-pill`(999px), `shadow-base`                                                    |
+| 폰트          | Pretendard Variable, 자체 호스팅 동적 서브셋 (사용 글자 범위만 로드)                                         |
+
+상세 값: [Figma 분석 · 디자인 사양](docs/figma-notes.md#디자인-사양-2026-10-13-수령)
 
 ## 데이터베이스
 

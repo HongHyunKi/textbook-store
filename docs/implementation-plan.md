@@ -28,16 +28,16 @@
 
 ## 계획 대비 변경
 
-| 처음 계획                                     | 변경                                                                                     | 이유                                                                                       |
-| --------------------------------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| 가격 정렬                                     | 카테고리 탭(전체·패스·단품)                                                              | Figma에 정렬이 없고 카테고리 탭이 있음. 원문 "화면에 보이는 부분 위주"                     |
-| `supabase/schema.sql`을 SQL Editor에서 실행   | `supabase/migrations/` + `supabase db push --include-seed`                               | 스키마 변경 이력을 저장소와 원격 DB에 남기기 위해                                          |
-| 카테고리 값 `'패스'`, `'단품'`                | `'pass'`, `'single'` + `CATEGORY_LABEL`                                                  | DB에는 코드값, 화면 표기는 UI에서 매핑                                                     |
-| npm                                           | pnpm (`packageManager` 고정)                                                             | 사용자 선택                                                                                |
-| Pretendard                                    | Noto Sans KR (`next/font/google`)                                                        | 폰트 파일을 저장소에 두지 않음. 정확한 Figma 폰트명은 확인 불가                            |
-| 배너 HTML 재구성                              | export 이미지 + `sr-only` 문구                                                           | 배너 이미지에 문구가 포함되어 있어 중복 표시를 피함                                        |
-| `placeholder.webp`                            | `placeholder.svg`                                                                        | 별도 이미지 파일 없이 SVG 한 개로 대체                                                     |
-| `components/`, `lib/`, feature 루트에 UI 파일 | `shared/{components,lib}`, `features/products/components/`, `index.ts`, ESLint 경계 규칙 | 공통 코드와 도메인 코드의 경계를 명확히 하고, 의존 방향·feature 간 참조 금지를 lint로 강제 |
+| 처음 계획                                     | 변경                                                                                                     | 이유                                                                                       |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| 가격 정렬                                     | 카테고리 탭(전체·패스·단품)                                                                              | Figma에 정렬이 없고 카테고리 탭이 있음. 원문 "화면에 보이는 부분 위주"                     |
+| `supabase/schema.sql`을 SQL Editor에서 실행   | `supabase/migrations/` + `supabase db push --include-seed`                                               | 스키마 변경 이력을 저장소와 원격 DB에 남기기 위해                                          |
+| 카테고리 값 `'패스'`, `'단품'`                | `'pass'`, `'single'` + `CATEGORY_LABEL`                                                                  | DB에는 코드값, 화면 표기는 UI에서 매핑                                                     |
+| npm                                           | pnpm (`packageManager` 고정)                                                                             | 사용자 선택                                                                                |
+| Noto Sans KR, 근사 색상 2개                   | Pretendard(npm, 자체 호스팅 동적 서브셋), 디자인 사양 기반 `@theme` 토큰(타이포 5·색상 16·모서리·그림자) | 디자인 사양 수령 후 재적용. 컴포넌트는 임의 색·크기 대신 토큰 클래스만 사용                |
+| 배너 HTML 재구성                              | export 이미지 + `sr-only` 문구                                                                           | 배너 이미지에 문구가 포함되어 있어 중복 표시를 피함                                        |
+| `placeholder.webp`                            | `placeholder.svg`                                                                                        | 별도 이미지 파일 없이 SVG 한 개로 대체                                                     |
+| `components/`, `lib/`, feature 루트에 UI 파일 | `shared/{components,lib}`, `features/products/components/`, `index.ts`, ESLint 경계 규칙                 | 공통 코드와 도메인 코드의 경계를 명확히 하고, 의존 방향·feature 간 참조 금지를 lint로 강제 |
 
 ## 검증 기록
 

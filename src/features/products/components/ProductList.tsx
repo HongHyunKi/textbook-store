@@ -58,35 +58,35 @@ export function ProductList(): JSX.Element {
           >
             {Array.from({ length: PAGE_SIZE }, (_, index) => (
               <div key={index} className="animate-pulse motion-reduce:animate-none">
-                <div className="aspect-[250/320] rounded-[6px] bg-gray-100" />
-                <div className="mt-4 h-3 w-8 rounded bg-gray-100" />
-                <div className="mt-2 h-5 w-4/5 rounded bg-gray-100" />
-                <div className="mt-3 h-5 w-1/2 rounded bg-gray-100" />
+                <div className="aspect-[250/320] rounded-base bg-surface-muted" />
+                <div className="mt-4 h-3 w-8 rounded-base bg-surface-muted" />
+                <div className="mt-2 h-5 w-4/5 rounded-base bg-surface-muted" />
+                <div className="mt-3 h-5 w-1/2 rounded-base bg-surface-muted" />
               </div>
             ))}
           </div>
         </div>
       ) : isLoadingError ? (
         <div className="py-24 text-center">
-          <p role="alert" className="text-gray-600">
+          <p role="alert" className="text-body text-text-dark">
             교재를 불러오지 못했습니다.
           </p>
           <button
             type="button"
             onClick={() => refetch()}
             disabled={isFetching}
-            className="mt-4 rounded border border-line px-4 py-2 text-sm disabled:opacity-50"
+            className="mt-4 rounded-base border border-border-secondary px-4 py-2 text-body-sm enabled:hover:bg-surface-muted disabled:opacity-50"
           >
             다시 시도
           </button>
         </div>
       ) : data.length === 0 ? (
-        <p role="status" className="py-24 text-center text-gray-500">
+        <p role="status" className="py-24 text-center text-body text-text-secondary">
           등록된 교재가 없습니다
         </p>
       ) : filteredProducts.length === 0 ? (
         <div className="py-24 text-center">
-          <p role="status" className="text-gray-500">
+          <p role="status" className="text-body text-text-secondary">
             검색 결과가 없습니다
           </p>
           <button
@@ -95,7 +95,7 @@ export function ProductList(): JSX.Element {
               changeQuery("");
               changeCategory("all");
             }}
-            className="mt-4 rounded border border-line px-4 py-2 text-sm"
+            className="mt-4 rounded-base border border-border-secondary px-4 py-2 text-body-sm hover:bg-surface-muted"
           >
             검색 초기화
           </button>

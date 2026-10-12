@@ -26,9 +26,9 @@ export function Banner() {
         </div>
         <p
           aria-hidden="true"
-          className="absolute bottom-[4%] right-[2%] rounded-full bg-black/40 px-2 py-0.5 text-[10px] text-neutral-300 sm:text-xs"
+          className="absolute right-[2.78%] bottom-[6.12%] flex w-[60px] justify-center rounded-pill bg-overlay px-2.5 py-1 text-body-sm text-background"
         >
-          <span className="text-white">1</span>/5
+          <span className="font-semibold">1</span>/5
         </p>
       </div>
     </section>
