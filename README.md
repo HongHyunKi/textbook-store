@@ -119,7 +119,7 @@ Figma 디자인 사양을 [`globals.css`](src/app/globals.css)의 `@theme` 토�
 
 ## 실행 방법
 
-요구 사항: Node.js 24, pnpm
+요구 사항: Node.js 24 이상, pnpm 10 (`package.json`의 `engines`, `packageManager`에 명시)
 
 ```bash
 pnpm install
