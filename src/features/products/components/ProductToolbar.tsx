@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { CATEGORY_LABEL, type CategoryFilter } from "../types";
 
 type ProductToolbarProps = {
@@ -19,6 +20,8 @@ export function ProductToolbar({
   onQueryChange,
   onCategoryChange,
 }: ProductToolbarProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   return (
     <div className="mb-9 flex flex-col items-end justify-end gap-4 sm:flex-row sm:items-center sm:gap-[17px]">
       <div className="relative w-full sm:w-[250px]">
@@ -37,6 +40,7 @@ export function ProductToolbar({
           <path d="m16 16 4.5 4.5" />
         </svg>
         <input
+          ref={inputRef}
           id="product-search"
           type="search"
           value={q}
@@ -50,7 +54,7 @@ export function ProductToolbar({
             aria-label="검색어 지우기"
             onClick={() => {
               onQueryChange("");
-              document.getElementById("product-search")?.focus();
+              inputRef.current?.focus();
             }}
             className="absolute top-0 right-0 flex h-[42px] w-8 items-center justify-center text-icon-stroke"
           >

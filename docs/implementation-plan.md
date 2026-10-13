@@ -19,11 +19,11 @@
 
 ### 남은 작업
 
-- [ ] GitHub 저장소를 Public으로 전환
+- [x] GitHub 저장소를 Public으로 전환
 - [x] Vercel 연결, 환경변수 `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` 등록
-- [ ] GitHub Actions secrets `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY` 등록, keepalive 수동 실행 확인
+- [x] GitHub Actions secrets `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY` 등록, keepalive 수동 실행 확인
 - [x] README 배포 URL 반영 (https://textbook-store.vercel.app)
-- [ ] 배포 URL 최종 점검(하드 리로드, Network의 products 요청, 콘솔 오류 0건, 쓰기 거부 `42501`, 시크릿 창)
+- [x] 배포 URL 최종 점검(하드 리로드, Network의 products 요청, 콘솔 오류 0건, 쓰기 거부 `42501`, 시크릿 창)
 - [ ] 두 URL을 메일로 회신
 
 ## 계획 대비 변경
