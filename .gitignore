@@ -43,3 +43,8 @@ next-env.d.ts
 
 # omc 작업 메모
 .omc/
+
+# gstack (project-local)
+/.gstack/
+/.claude/skills/
+/.claude/settings.local.json

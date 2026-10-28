@@ -29,7 +29,16 @@ export default function ForgotPasswordPage() {
               <h1 className="text-body-lg text-text-dark">메일을 확인해 주세요</h1>
               <p className="mt-2 text-body-sm text-text-secondary">
                 입력한 이메일로 재설정 안내를 보냈어요
+                <br />
+                메일이 오지 않으면 잠시 후 다시 시도해 주세요.
               </p>
+              <button
+                type="button"
+                onClick={() => setStatus("idle")}
+                className="mt-6 h-[48px] w-full rounded-base border border-border-secondary text-body text-text-dark"
+              >
+                다른 이메일로 다시 받기
+              </button>
             </div>
           ) : (
             <>
