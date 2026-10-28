@@ -4,19 +4,21 @@ import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { Footer } from "@/shared/components/layout/Footer";
 import { Header } from "@/shared/components/layout/Header";
+import { getSupabase } from "@/shared/lib/supabase";
 
-// 화면 확인용 샘플. 실제 재설정 요청은 보내지 않는다.
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(false);
-  const [status, setStatus] = useState<"idle" | "loading" | "sent">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "sent" | "error">("idle");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setStatus("loading");
-    // TODO: 비밀번호 재설정 요청 연동
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setStatus("sent");
+    // 가입되지 않은 이메일도 Supabase는 성공으로 응답한다(가입 여부 노출 방지).
+    const { error } = await getSupabase().auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setStatus(error ? "error" : "sent");
   }
 
   return (
@@ -68,6 +70,11 @@ export default function ForgotPasswordPage() {
                 >
                   {status === "loading" ? "보내는 중..." : "재설정 링크 받기"}
                 </button>
+                {status === "error" && (
+                  <p role="alert" className="text-body-sm text-discount-alternate">
+                    메일을 보내지 못했어요. 잠시 후 다시 시도해 주세요.
+                  </p>
+                )}
               </form>
             </>
           )}
